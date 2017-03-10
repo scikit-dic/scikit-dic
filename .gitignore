@@ -1,0 +1,10 @@
+__pycache__
+.backups
+.ipynb_checkpoints
+pyDIC.egg-info
+.cache
+.coverage
+*.bak
+*.pyc
+build/
+dist/
