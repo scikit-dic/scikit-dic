@@ -1,7 +1,7 @@
 __pycache__
 .backups
 .ipynb_checkpoints
-pyDIC.egg-info
+skDIC.egg-info
 .cache
 .coverage
 *.bak
