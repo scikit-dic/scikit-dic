@@ -175,7 +175,7 @@ def subpixelar_dft(subimg1, subimg2, upsample_factor=10):
             'CCimage_subpix': subpix_correl,
             'displacement_subpix': subpix_dis,
             'CCimage': subpix_correl,
-            'displacement': subpix_displacement}
+            'displacement': subpix_dis}
 
 
 def subpixelar_interp(subimg1, subimg2, num_points_interp=1,
