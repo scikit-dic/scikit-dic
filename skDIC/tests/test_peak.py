@@ -50,7 +50,7 @@ class TestPeakNearCenter(unittest.TestCase):
         # Peak centered around 50, 100
         img[50:51, 100:101] = 3
         img[79:82, 39:42] = 20
-        expected = peak_local_max(img)[0]
+        expected = (50, 100)
         width = 30
         result = peak_near_center(img, width)
         assert_equal(result, expected)
@@ -73,7 +73,7 @@ class TestPeakNearCenterFitted(unittest.TestCase):
         # Peak centered around 50, 100
         img[50:51, 100:101] = 3
         img[79:82, 39:42] = 20
-        expected = peak_local_max(img)[0]
+        expected = (50, 100)
         width = 10
         result = peak_near_center_fitted(img, width)
         assert_array_almost_equal(result, expected)

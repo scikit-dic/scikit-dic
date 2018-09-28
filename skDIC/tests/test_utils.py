@@ -14,7 +14,7 @@ class TestEntropy(unittest.TestCase):
         img = np.zeros((10, 10))
         with expected_warnings(['invalid value encountered in true_divide']):
             res = entropy(img)
-        assert_equal(res, -np.inf)
+        assert_equal(res, np.nan)
 
 
 class TestInterpolateImage(unittest.TestCase):
