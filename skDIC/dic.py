@@ -8,7 +8,6 @@ import warnings
 
 try:
     from dask import compute, delayed
-    import dask.multiprocessing
 except ImportError:
     dask_available = False
 else:
@@ -158,7 +157,7 @@ def dic(img1, img2, subset_dic, bsize=16, seek=None, overlap=None,
     if dask_available and parallel:
         values = [delayed(_dic_task)(i, j, s1, s2, bsize, subset_dic, stats, **kwargs)
                   for i, j, s1, s2 in gen_subset(img1, img2, bsize, seek, overlap)]
-        data = compute(*values, get=dask.multiprocessing.get)
+        data = compute(*values, scheduler='processes')
     else:
         data = [_dic_task(i, j, s1, s2, bsize, subset_dic, stats, **kwargs)
                 for i, j, s1, s2 in gen_subset(img1, img2, bsize, seek, overlap)]
@@ -237,7 +236,7 @@ def batch_dic(frames, subset_dic, bsize=16, seek=None, overlap=None,
     if dask_available:
         values = [delayed(task)(i, img1, img2, subset_dic, bsize, seek, overlap, stats, parallel=parallel_dic, **kwargs)
                   for i, (img1, img2) in pairwise(frames)]
-        all_dis = compute(*values, get=dask.multiprocessing.get)
+        all_dis = compute(*values, scheduler='processes')
     else:
         all_dis = [task(i, img1, img2, subset_dic, bsize, seek, overlap, stats, **kwargs)
                    for i, (img1, img2) in pairwise(frames)]
