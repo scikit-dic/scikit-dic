@@ -242,3 +242,38 @@ def batch_dic(frames, subset_dic, bsize=16, seek=None, overlap=None,
                    for i, (img1, img2) in pairwise(frames)]
 
     return pd.concat(all_dis).reset_index(drop=True)
+
+
+def compute_cumulative_displacements(df):
+    """
+    Compute the cumulative displacements of a dataframe.
+
+    :param df: dataframe
+
+    """
+
+    all_frames = df.frame.unique()
+    all_frames.sort()
+
+    # initialize the new data with trivial first case
+    new_data =  df[df.frame == all_frames[0]].copy()
+    new_data['cumdx'] = new_data.dx
+    new_data['cumdy'] = new_data.dy
+
+    for frame in all_frames[1:]:
+        f1 = df[df.frame == frame-1]
+        f2 = df[df.frame == frame]
+        f1 = f1.sort_values(by=['x', 'y'], ascending=[True, True])
+        f1 = f1.reset_index()
+        f2 = f2.sort_values(by=['x', 'y'], ascending=[True, True])
+        f2 = f2.reset_index()
+        f2['cumdx'] = f1.dx + f2.dx
+        f2['cumdy'] = f1.dy + f2.dy
+        f2['cumdl'] = np.sqrt(f2.cumdx**2 + f2.cumdy**2)
+        new_data = pd.concat((new_data, f2))
+
+    # Sort, reset pandas indices, and cleanup
+    new_data.sort_values(by=['frame', 'x', 'y'], ascending=[True, True, True], inplace=True)
+    new_data.reset_index(inplace=True, drop=True)
+    new_data.drop(columns='index', inplace=True)
+    return new_data
